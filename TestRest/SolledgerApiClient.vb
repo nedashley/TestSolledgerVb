@@ -24,6 +24,7 @@ Public Class SolledgerApiClientForm
             ButtonSearchClients.Enabled = True
             ButtonSearchMatters.Enabled = True
             ButtonCreateBranch.Enabled = True
+            ButtonCreateMatter.Enabled = True
         End If
     End Sub
 
@@ -48,5 +49,16 @@ Public Class SolledgerApiClientForm
         branch.Name = "Test Branch"
         branch = LedgerBranchService.CreateBranch(database, txtUsername.Text, txtApiKey.Text, branch)
         MsgBox("Created Branch with ID: " & branch.Id)
+    End Sub
+
+    Private Sub ButtonCreateMatter_Click(sender As Object, e As EventArgs) Handles ButtonCreateMatter.Click
+        Dim _client As Client = New Client
+        _client.code = "TEST-API123"
+        _client.name = "Test Clent via API"
+        Dim _matter As Matter = New Matter
+        _matter.code = "TEST-API123"
+        _matter.description = "Test Matter via API"
+        _matter.client = _client
+        LedgerMatterService.CreateMatter(database, txtUsername.Text, txtApiKey.Text, _matter)
     End Sub
 End Class

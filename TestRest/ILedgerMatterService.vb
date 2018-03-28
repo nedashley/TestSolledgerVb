@@ -81,9 +81,12 @@ Public Class ILedgerMatterService
     Public Function CreateMatter(database As Database, username As String, apiKey As String, _matter As Matter) As Matter Implements LedgerMatterService.CreateMatter
         Dim reader As StreamReader = Nothing
         Dim response As WebResponse = Nothing
+        Dim SendStatus As Integer = -1
+        Dim statusCode As HttpStatusCode
+        Dim ResponseText As String
         Try
             Dim request As WebRequest =
-              WebRequest.Create("https://api.redmonkeysoftware.com/ledger/" & database.name & "/matters")
+              WebRequest.Create("https://api.redmonkeysoftware.com/ledger/" & database.name & "/matters?updateClient=true")
             Dim authInfo = username + ":" + apiKey
             authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(authInfo))
             request.Headers.Add("Authorization", "Basic " + authInfo)
@@ -98,6 +101,7 @@ Public Class ILedgerMatterService
             dataStream.Close()
             response = request.GetResponse()
             Console.WriteLine(CType(response, HttpWebResponse).StatusDescription)
+            Console.WriteLine(response.ToString)
             Dim responseStream As Stream = response.GetResponseStream()
             reader = New StreamReader(responseStream)
             Dim responseFromServer As String = reader.ReadToEnd()
@@ -105,10 +109,25 @@ Public Class ILedgerMatterService
             Dim json As String = responseFromServer
             Dim matter As Matter = JsonConvert.DeserializeObject(Of Matter)(json)
             Return matter
-        Catch exc As Exception
-            ' Handle exceptions that occur within
-            ' the Try block, here.
-            Console.WriteLine(exc.Message)
+        Catch exc As WebException
+            'If (exc.Status = WebExceptionStatus.ProtocolError) Then
+            Dim errorResponse As WebResponse = exc.Response
+                Using (errorResponse)
+                    Dim httpResponse As HttpWebResponse = CType(errorResponse, HttpWebResponse)
+                    statusCode = httpResponse.StatusCode
+                    Try
+                        reader = New StreamReader(errorResponse.GetResponseStream())
+                    Using (reader)
+                        ResponseText = reader.ReadToEnd & "Status Description = " & httpResponse.StatusDescription ' HttpWebResponse.StatusDescription
+                    End Using
+                    Console.WriteLine(ResponseText)
+                Catch ex As Exception
+                        'Logger.LogError(Me, ex)
+                        Console.WriteLine(ex.Message)
+                        Console.WriteLine(ex.StackTrace)
+                    End Try
+                End Using
+            'End If
         Finally
             If reader IsNot Nothing Then
                 reader.Close()

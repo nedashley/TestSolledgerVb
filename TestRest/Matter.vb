@@ -27,7 +27,7 @@ Public Class Matter
     Private _startdate As DateTime?
     Private _status As String
     Private _tag As String
-    Private _type As String
+    Private _type As String = "MATTER"
     Private _ufn As String
     Private _wipbal As Double
     Private _wipballimit As Double
@@ -268,13 +268,10 @@ Public Class Matter
         End Set
     End Property
 
-    Public Property type As String
+    Public ReadOnly Property type As String
         Get
             Return _type
         End Get
-        Set(value As String)
-            _type = value
-        End Set
     End Property
 
     Public Property ufn As String

@@ -41,6 +41,7 @@ Partial Class SolledgerApiClientForm
         Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.ButtonCreateBranch = New System.Windows.Forms.Button()
+        Me.ButtonCreateMatter = New System.Windows.Forms.Button()
         CType(Me.DataGridViewClients, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridViewMatters, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -213,11 +214,22 @@ Partial Class SolledgerApiClientForm
         Me.ButtonCreateBranch.Text = "Create Branch"
         Me.ButtonCreateBranch.UseVisualStyleBackColor = True
         '
+        'ButtonCreateMatter
+        '
+        Me.ButtonCreateMatter.Enabled = False
+        Me.ButtonCreateMatter.Location = New System.Drawing.Point(391, 70)
+        Me.ButtonCreateMatter.Name = "ButtonCreateMatter"
+        Me.ButtonCreateMatter.Size = New System.Drawing.Size(158, 35)
+        Me.ButtonCreateMatter.TabIndex = 15
+        Me.ButtonCreateMatter.Text = "Create Matter"
+        Me.ButtonCreateMatter.UseVisualStyleBackColor = True
+        '
         'SolledgerApiClientForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 564)
+        Me.Controls.Add(Me.ButtonCreateMatter)
         Me.Controls.Add(Me.ButtonCreateBranch)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.DataGridViewMatters)
@@ -260,4 +272,5 @@ Partial Class SolledgerApiClientForm
     Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
     Friend WithEvents Description As DataGridViewTextBoxColumn
     Friend WithEvents ButtonCreateBranch As Button
+    Friend WithEvents ButtonCreateMatter As Button
 End Class
